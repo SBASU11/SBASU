@@ -1,5 +1,5 @@
 ---
-title: "Project Title"
+title: "Transcriptomics profiling of Ovarian Cancer cells demonstrating differential lncRNA and mRNA expression"
 author: "Sneha Basu"
 output: "html_document"
 ---

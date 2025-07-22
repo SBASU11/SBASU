@@ -3,7 +3,7 @@
     "path": "~/Desktop/GitHub/SBASU/projects/project_title.qmd",
     "project_path": "projects/project_title.qmd",
     "type": "quarto_markdown",
-    "hash": "1556711922",
+    "hash": "953918274",
     "contents": "",
     "dirty": false,
     "created": 1752856787448.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "3,23",
+        "cursorPosition": "1,111",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1753199937,
+    "lastKnownWriteTime": 1753200609,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1753199937086,
+    "last_content_update": 1753200609994,
     "read_only": false,
     "read_only_alternatives": []
 }
