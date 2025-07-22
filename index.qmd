@@ -6,11 +6,11 @@ about:
   template: trestles
   links:
     - text: GitHub
-      href: SBASU11
+      url: https://github.com/SBASU11
     - text: Email
-      href: Sneha-Basu@ouhsc.edu
+      url: Sneha-Basu@ouhsc.edu
     - text: Linkedin
-      href: www.linkedin.com/in/sneha-basu-a409a1203/
+      url: https://www.linkedin.com/in/sneha-basu-a409a1203/
 ---
 
 ::: {.column-page}
