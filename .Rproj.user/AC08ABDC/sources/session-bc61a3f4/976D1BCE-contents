@@ -1,14 +1,16 @@
 ---
-title: "SnehaBasu"
+title: "Sneha Basu"
 toc: false
 image: image.jpg
 about:
   template: trestles
   links:
     - text: GitHub
-      href: link
+      href: SBASU11
     - text: Email
-      href: link
+      href: Sneha-Basu@ouhsc.edu
+    - text: Linkedin
+      href: www.linkedin.com/in/sneha-basu-a409a1203/
 ---
 
 ::: {.column-page}
