@@ -2,6 +2,43 @@
 title: "Transcriptomics profiling of Ovarian Cancer cells demonstrating differential lncRNA and mRNA expression"
 author: "Sneha Basu"
 output: "html_document"
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 About this site
+
+library(ggplot2) 
+library(readr) 
+library(dplyr)
+
+data <- read_csv("CNC_mRNA.csv")
+
+# Preparing the data for volcano plot
+volcano_data <- data %>%
+  mutate(
+    log2FC = ifelse(Regulation == "down", -log2(`FoldChange`), log2(`FoldChange`)),
+    negLog10P = -log10(p_value),
+    regulation = case_when(
+      log2FC >= 1 & p_value < 0.05 ~ "Upregulated",
+      log2FC <= -1 & p_value < 0.05 ~ "Downregulated",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+# This step is to confirm the differential distribution
+table(volcano_data$regulation)
+
+# Volcano plot
+ggplot(volcano_data, aes(x = log2FC, y = negLog10P, color = regulation)) +
+  geom_point(alpha = 0.8, size = 1.5) +
+  scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "green", "Not Significant" = "black")) + geom_vline(xintercept = c(-1, 1), linetype = "dotted", color = "grey40") + geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") + 
+  theme_minimal() +
+  labs(
+    title = "Volcano Plot: CNC mRNA Differential Expression",
+    x = "log2(Fold Change)",
+    y = "-log10(p-value)"
+  ) +
+  theme(legend.title = element_blank())
+
