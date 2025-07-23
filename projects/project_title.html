@@ -109,8 +109,16 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#preparing-the-data-for-volcano-plot" id="toc-preparing-the-data-for-volcano-plot" class="nav-link active" data-scroll-target="#preparing-the-data-for-volcano-plot">Preparing the data for volcano plot</a></li>
+  <li><a href="#this-step-is-to-confirm-the-differential-distribution" id="toc-this-step-is-to-confirm-the-differential-distribution" class="nav-link" data-scroll-target="#this-step-is-to-confirm-the-differential-distribution">This step is to confirm the differential distribution</a></li>
+  <li><a href="#volcano-plot" id="toc-volcano-plot" class="nav-link" data-scroll-target="#volcano-plot">Volcano plot</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -141,8 +149,22 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>About this site</p>
+<p>library(ggplot2) library(readr) library(dplyr)</p>
+<p>data &lt;- read_csv(“CNC_mRNA.csv”)</p>
+<section id="preparing-the-data-for-volcano-plot" class="level1">
+<h1>Preparing the data for volcano plot</h1>
+<p>volcano_data &lt;- data %&gt;% mutate( log2FC = ifelse(Regulation == “down”, -log2(<code>FoldChange</code>), log2(<code>FoldChange</code>)), negLog10P = -log10(p_value), regulation = case_when( log2FC &gt;= 1 &amp; p_value &lt; 0.05 ~ “Upregulated”, log2FC &lt;= -1 &amp; p_value &lt; 0.05 ~ “Downregulated”, TRUE ~ “Not Significant” ) )</p>
+</section>
+<section id="this-step-is-to-confirm-the-differential-distribution" class="level1">
+<h1>This step is to confirm the differential distribution</h1>
+<p>table(volcano_data$regulation)</p>
+</section>
+<section id="volcano-plot" class="level1">
+<h1>Volcano plot</h1>
+<p>ggplot(volcano_data, aes(x = log2FC, y = negLog10P, color = regulation)) + geom_point(alpha = 0.8, size = 1.5) + scale_color_manual(values = c(“Upregulated” = “red”, “Downregulated” = “green”, “Not Significant” = “black”)) + geom_vline(xintercept = c(-1, 1), linetype = “dotted”, color = “grey40”) + geom_hline(yintercept = -log10(0.05), linetype = “dotted”, color = “grey40”) + theme_minimal() + labs( title = “Volcano Plot: CNC mRNA Differential Expression”, x = “log2(Fold Change)”, y = “-log10(p-value)” ) + theme(legend.title = element_blank())</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

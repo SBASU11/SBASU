@@ -11,6 +11,6 @@
     "href": "projects/project_title.html",
     "title": "Transcriptomics profiling of Ovarian Cancer cells demonstrating differential lncRNA and mRNA expression",
     "section": "",
-    "text": "About this site"
+    "text": "About this site\nlibrary(ggplot2) library(readr) library(dplyr)\ndata &lt;- read_csv(“CNC_mRNA.csv”)\n\nPreparing the data for volcano plot\nvolcano_data &lt;- data %&gt;% mutate( log2FC = ifelse(Regulation == “down”, -log2(FoldChange), log2(FoldChange)), negLog10P = -log10(p_value), regulation = case_when( log2FC &gt;= 1 & p_value &lt; 0.05 ~ “Upregulated”, log2FC &lt;= -1 & p_value &lt; 0.05 ~ “Downregulated”, TRUE ~ “Not Significant” ) )\n\n\nThis step is to confirm the differential distribution\ntable(volcano_data$regulation)\n\n\nVolcano plot\nggplot(volcano_data, aes(x = log2FC, y = negLog10P, color = regulation)) + geom_point(alpha = 0.8, size = 1.5) + scale_color_manual(values = c(“Upregulated” = “red”, “Downregulated” = “green”, “Not Significant” = “black”)) + geom_vline(xintercept = c(-1, 1), linetype = “dotted”, color = “grey40”) + geom_hline(yintercept = -log10(0.05), linetype = “dotted”, color = “grey40”) + theme_minimal() + labs( title = “Volcano Plot: CNC mRNA Differential Expression”, x = “log2(Fold Change)”, y = “-log10(p-value)” ) + theme(legend.title = element_blank())"
   }
 ]
