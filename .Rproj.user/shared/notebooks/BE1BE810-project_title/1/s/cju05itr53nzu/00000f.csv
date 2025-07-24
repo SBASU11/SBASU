@@ -1,3 +1,4 @@
+"0","lncRNA_data <- read_csv(""CNC_lncRNA.csv"")"
 "0","lncRNA_data <- lncRNA_data |> "
 "0","  mutate("
 "0","    log2FC = ifelse(Regulation == ""down"", -log2(`FoldChange`), log2(`FoldChange`)),"

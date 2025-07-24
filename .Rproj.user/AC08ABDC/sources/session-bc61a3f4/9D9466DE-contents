@@ -21,12 +21,13 @@ library(tidyverse)
 ```
 
 ```{r}
-mRNA_data <- read_csv("CNC_mRNA.csv")
+
 ```
 
 Preparing the data for volcano plot
 
 ```{r}
+mRNA_data <- read_csv("CNC_mRNA.csv")
 mRNA_data <- mRNA_data |> 
   mutate(
     log2FC = ifelse(Regulation == "down", -log2(FoldChange), log2(FoldChange)),
@@ -65,10 +66,11 @@ ggplot(mRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
 ```
 
 ```{r}
-lncRNA_data <- read_csv("CNC_lncRNA.csv")
+
 ```
 
 ```{r}
+lncRNA_data <- read_csv("CNC_lncRNA.csv")
 lncRNA_data <- lncRNA_data |> 
   mutate(
     log2FC = ifelse(Regulation == "down", -log2(`FoldChange`), log2(`FoldChange`)),
@@ -111,31 +113,31 @@ What are the top twenty most upregulated and downregulated genes?
 Compute log2FC and -log10(p-value)
 
 ```{r}
-data <- data |> mutate( log2FC = ifelse(Regulation == "down", -log2(FoldChange), log2(FoldChange)), negLog10P = -log10(p_value) )
+
 ```
 
 Top 20 upregulated genes
 
 ```{r}
-top_up <- data |> arrange(desc(log2FC)) |> slice_head(n = 20)
+top_up_mRNA <- mRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)
 ```
 
 Plot upregulated
 
 ```{r}
-ggplot(top_up, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_up_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 downregulated genes
 
 ```{r}
-top_down <- data %>% arrange(log2FC) %>% slice_head(n = 20)
+top_down_mRNA <- mRNA_data %>% arrange(log2FC) %>% slice_head(n = 20)
 ```
 
 Plot downregulated
 
 ```{r}
-ggplot(top_down, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_down_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Is there any transcriptomic variation among the ovarian cancer samples

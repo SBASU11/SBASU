@@ -1,1 +1,1 @@
-"0","top_up <- data |> arrange(desc(log2FC)) |> slice_head(n = 20)"
+"0","top_up_mRNA <- mRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)"
