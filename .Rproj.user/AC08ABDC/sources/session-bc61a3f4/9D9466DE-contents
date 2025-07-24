@@ -7,38 +7,146 @@ editor:
     wrap: 72
 ---
 
-About this site
+The goal of this study is to explore the transcriptomic changes in
+ovarian cancer cells by analyzing mRNA and lncRNA expression. We aim to
+identify significantly dysregulated genes and understand their roles in
+cancer progression using various computational techniques such as
+volcano plots, bar graphs, PCA, and CNC (coding-non-coding) correlation
+analysis.
 
-library(ggplot2) 
-library(readr) 
-library(dplyr)
+1.  What are the differentially expressed genes in Ovarian Cancer?
 
-data <- read_csv("CNC_mRNA.csv")
+```{r}
+library(tidyverse)
+```
 
-# Preparing the data for volcano plot
-volcano_data <- data %>%
+```{r}
+mRNA_data <- read_csv("CNC_mRNA.csv")
+```
+
+Preparing the data for volcano plot
+
+```{r}
+mRNA_data <- mRNA_data |> 
   mutate(
-    log2FC = ifelse(Regulation == "down", -log2(`FoldChange`), log2(`FoldChange`)),
+    log2FC = ifelse(Regulation == "down", -log2(FoldChange), log2(FoldChange)),
     negLog10P = -log10(p_value),
-    regulation = case_when(
+    status = case_when(
       log2FC >= 1 & p_value < 0.05 ~ "Upregulated",
       log2FC <= -1 & p_value < 0.05 ~ "Downregulated",
       TRUE ~ "Not Significant"
     )
   )
+```
 
-# This step is to confirm the differential distribution
-table(volcano_data$regulation)
+```{r}
+table(mRNA_data$status)
+```
 
-# Volcano plot
-ggplot(volcano_data, aes(x = log2FC, y = negLog10P, color = regulation)) +
+Plotting the Volcano plot for mRNA data
+
+```{r}
+ggplot(mRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
   geom_point(alpha = 0.8, size = 1.5) +
-  scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "green", "Not Significant" = "black")) + geom_vline(xintercept = c(-1, 1), linetype = "dotted", color = "grey40") + geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") + 
+  scale_color_manual(values = c(
+    "Upregulated" = "red",
+    "Downregulated" = "green",
+    "Not Significant" = "black"
+  )) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dotted", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") +
   theme_minimal() +
   labs(
-    title = "Volcano Plot: CNC mRNA Differential Expression",
+    title = "Volcano Plot: Differential Expression (mRNA)",
     x = "log2(Fold Change)",
     y = "-log10(p-value)"
   ) +
   theme(legend.title = element_blank())
+```
 
+```{r}
+lncRNA_data <- read_csv("CNC_lncRNA.csv")
+```
+
+```{r}
+lncRNA_data <- lncRNA_data |> 
+  mutate(
+    log2FC = ifelse(Regulation == "down", -log2(`FoldChange`), log2(`FoldChange`)),
+    negLog10P = -log10(p_value),
+    status = case_when(
+      log2FC >= 1 & p_value < 0.05 ~ "Upregulated",
+      log2FC <= -1 & p_value < 0.05 ~ "Downregulated",
+      TRUE ~ "Not Significant"))
+```
+
+Preparing the data for volcano plot
+
+```{r}
+table(lncRNA_data$status)
+```
+
+Plotting the Volcano plot for lncRNA data
+
+```{r}
+ggplot(lncRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
+  geom_point(alpha = 0.8, size = 1.5) +
+  scale_color_manual(values = c(
+    "Upregulated" = "red",
+    "Downregulated" = "green",
+    "Not Significant" = "black"
+  )) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dotted", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") +
+  theme_minimal() +
+  labs(
+    title = "Volcano Plot: Differential Expression (lncRNA)",
+    x = "log2(Fold Change)",
+    y = "-log10(p-value)"
+  ) +
+  theme(legend.title = element_blank())
+```
+
+What are the top twenty most upregulated and downregulated genes?
+
+Compute log2FC and -log10(p-value)
+
+```{r}
+data <- data |> mutate( log2FC = ifelse(Regulation == "down", -log2(FoldChange), log2(FoldChange)), negLog10P = -log10(p_value) )
+```
+
+Top 20 upregulated genes
+
+```{r}
+top_up <- data |> arrange(desc(log2FC)) |> slice_head(n = 20)
+```
+
+Plot upregulated
+
+```{r}
+ggplot(top_up, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+```
+
+Top 20 downregulated genes
+
+```{r}
+top_down <- data %>% arrange(log2FC) %>% slice_head(n = 20)
+```
+
+Plot downregulated
+
+```{r}
+ggplot(top_down, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+```
+
+Is there any transcriptomic variation among the ovarian cancer samples
+and control sample?
+
+Which lncRNAs correlate with mRNAs in ovarian cancer?
+
+Conclusion
+
+By combining volcano plots, bar graphs, PCA, and CNC analysis, we can
+dissect the complex transcriptomic landscape of ovarian cancer cells.
+This structured pipeline not only identifies key regulators but also
+provides biological insights for downstream validation and hypothesis
+generation.

@@ -1,0 +1,8 @@
+"0","lncRNA_data <- lncRNA_data |> "
+"0","  mutate("
+"0","    log2FC = ifelse(Regulation == ""down"", -log2(`FoldChange`), log2(`FoldChange`)),"
+"0","    negLog10P = -log10(p_value),"
+"0","    status = case_when("
+"0","      log2FC >= 1 & p_value < 0.05 ~ ""Upregulated"","
+"0","      log2FC <= -1 & p_value < 0.05 ~ ""Downregulated"","
+"0","      TRUE ~ ""Not Significant""))"
