@@ -12,9 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
+<<<<<<< HEAD
+        "cursorPosition": "211,0",
+        "scrollLine": "140",
+        "rmdVisualMode": "false",
+=======
         "cursorPosition": "28,0",
         "scrollLine": "56",
         "rmdVisualMode": "true",
+>>>>>>> parent of 608b7d9 (Final Changes)
         "rmdVisualCollapsedChunks": "",
         "rmdVisualModeLocation": "740:176",
         "rmdVisualWrapConfigured": "true",
@@ -22,11 +28,19 @@
         "ignored_words": "transcriptomic\n"
     },
     "folds": "",
+<<<<<<< HEAD
+    "lastKnownWriteTime": 1753570496,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1753570496158,
+=======
     "lastKnownWriteTime": 1753394339,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
     "last_content_update": 1753394339145,
+>>>>>>> parent of 608b7d9 (Final Changes)
     "read_only": false,
     "read_only_alternatives": []
 }
