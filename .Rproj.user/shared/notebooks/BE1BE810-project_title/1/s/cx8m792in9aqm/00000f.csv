@@ -1,1 +1,3 @@
+"0","#| message: false"
+"0","#| warning: false"
 "0","top_up_mRNA <- mRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)"

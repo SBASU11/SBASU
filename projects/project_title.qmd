@@ -16,6 +16,8 @@ expression. They can influence cellular processes such as chromatin
 remodeling, transcription, splicing, and translation by interacting with
 DNA, RNA, or proteins.
 
+![](images/clipboard-798930082.png)
+
 The goal of this study is to explore the transcriptomic changes in
 ovarian cancer cells by analyzing mRNA and lncRNA expression. We aim to
 identify significantly dysregulated genes and understand their roles in
@@ -45,9 +47,7 @@ mRNA_data <- mRNA_data |>
     status = case_when(
       log2FC >= 2 & p_value < 0.05 ~ "Upregulated",
       log2FC <= -2 & p_value < 0.05 ~ "Downregulated",
-      TRUE ~ "Not Significant"
-    )
-  )
+      TRUE ~ "Not Significant"))
 ```
 
 ```{r}
@@ -68,7 +68,7 @@ ggplot(mRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
   geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "black") +
   theme_minimal() +
   labs(
-    title = "Volcano Plot: Differential Expression (mRNA)",
+    title = "Differential mRNA Expression",
     x = "log2(Fold Change)",
     y = "-log10(p-value)"
   ) +
@@ -112,7 +112,7 @@ ggplot(lncRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
   geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "black") +
   theme_minimal() +
   labs(
-    title = "Volcano Plot: Differential Expression (lncRNA)",
+    title = "Differential lncRNA Expression",
     x = "log2(Fold Change)",
     y = "-log10(p-value)"
   ) +
@@ -124,80 +124,76 @@ ggplot(lncRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
 Top 20 upregulated mRNA
 
 ```{r}
+#| message: false
+#| warning: false
 top_up_mRNA <- mRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)
 ```
 
 Plot upregulated mRNA
 
 ```{r}
-ggplot(top_up_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_up_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 downregulated mRNA
 
 ```{r}
+#| message: false
+#| warning: false
 top_down_mRNA <- mRNA_data |> arrange(log2FC) |> slice_head(n = 20)
 ```
 
 Plot downregulated mRNA
 
 ```{r}
-ggplot(top_down_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_down_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 upregulated lncRNA
 
 ```{r}
 top_up_lncRNA <- lncRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)
-ggplot(top_up_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_up_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 downregulated lncRNA
 
 ```{r}
 top_down_lncRNA <- lncRNA_data |> arrange(log2FC) |> slice_head(n = 20)
-ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated Genes", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 ### Is there any transcriptomic variation among the ovarian cancer samples and control sample?
 
 ```{r}
-# Step 1: Read data
+
 lncRNA_data <- read_csv("CNC_lncRNA.csv")
 mRNA_data <- read_csv("CNC_mRNA.csv")
 
-# Step 2: Extract expression columns
+
 expr_cols <- c("2,treatednormalized", "3,treatednormalized", "4,treatednormalized", 
                "5,treatednormalized", "6,treatednormalized", "1,controlnormalized")
 
 lncRNA_expr <- lncRNA_data[, expr_cols]
 mRNA_expr <- mRNA_data[, expr_cols]
-
-# Step 3: Set gene names as row names
 rownames(lncRNA_expr) <- make.unique(lncRNA_data$GeneSymbol)
 rownames(mRNA_expr) <- make.unique(mRNA_data$GeneSymbol)
-
-# Step 4: Combine and transpose data
 combined_expr <- rbind(mRNA_expr, lncRNA_expr)
 combined_expr_t <- t(combined_expr)
 
-# Step 5: Rename rownames for samples
+
 rownames(combined_expr_t) <- c("Kuramochi", "SNU-119", "OVCAR3", "SKOV3", "OVCAR4", "Control")
-
-# Step 6: Run PCA
 pca_res <- prcomp(combined_expr_t, scale. = TRUE)
-
-# Step 7: Prepare PCA data frame
 pca_df <- data.frame(pca_res$x[, 1:2])
 pca_df$Sample <- rownames(pca_df)
 pca_df$Group <- c("Cancer", "Cancer", "Cancer", "Cancer", "Cancer", "Control")
 
-# Step 8: Plot
+#Plot
 ggplot(pca_df, aes(x = PC1, y = PC2, color = Group, label = Sample)) +
   geom_point(size = 3) +
   geom_text(vjust = 1.5, size = 3) +
   scale_color_manual(values = c("Cancer" = "red", "Control" = "blue")) +
-  labs(title = "PCA: Combined mRNA and lncRNA Expression",
+  labs(title = "PCA Plot",
        x = "Principal Component 1",
        y = "Principal Component 2") +
   theme_minimal()

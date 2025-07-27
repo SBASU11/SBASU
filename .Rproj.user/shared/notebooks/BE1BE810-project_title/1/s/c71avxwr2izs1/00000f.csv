@@ -9,6 +9,4 @@
 "0","    status = case_when("
 "0","      log2FC >= 2 & p_value < 0.05 ~ ""Upregulated"","
 "0","      log2FC <= -2 & p_value < 0.05 ~ ""Downregulated"","
-"0","      TRUE ~ ""Not Significant"""
-"0","    )"
-"0","  )"
+"0","      TRUE ~ ""Not Significant""))"

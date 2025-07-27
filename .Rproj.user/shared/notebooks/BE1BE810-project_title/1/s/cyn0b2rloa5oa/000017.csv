@@ -1,0 +1,2 @@
+"0","top_up_lncRNA <- lncRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)"
+"0","ggplot(top_up_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = ""pink"", high = ""darkred"", name = ""-log10(p-value)"") + coord_flip() + theme_minimal() + labs( title = ""Top 20 Upregulated lncRNA"", x = ""Gene Symbol"", y = ""log2(Fold Change)"")"
