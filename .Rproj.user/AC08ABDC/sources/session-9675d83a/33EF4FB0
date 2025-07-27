@@ -1,0 +1,32 @@
+{
+    "id": "33EF4FB0",
+    "path": "~/Desktop/GitHub/SBASU/projects/project_title.qmd",
+    "project_path": "projects/project_title.qmd",
+    "type": "quarto_markdown",
+    "hash": "1505095177",
+    "contents": "",
+    "dirty": false,
+    "created": 1753573406620.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "163,0",
+        "scrollLine": "130",
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "5193:5064.5",
+        "ignored_words": "transcriptomic\n"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1753575978,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1753575978287,
+    "read_only": false,
+    "read_only_alternatives": []
+}
