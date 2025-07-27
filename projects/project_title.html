@@ -352,60 +352,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="is-there-any-transcriptomic-variation-among-the-ovarian-cancer-samples-and-control-sample" class="level3">
 <h3 class="anchored" data-anchor-id="is-there-any-transcriptomic-variation-among-the-ovarian-cancer-samples-and-control-sample">Is there any transcriptomic variation among the ovarian cancer samples and control sample?</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lncRNA_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"CNC_lncRNA.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1932 Columns: 16
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (5): ProbeName, Regulation, GeneSymbol, chrom, strand
-dbl (11): FoldChange, RNAlength, txStart, txEnd, 2,treatednormalized, 3,trea...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mRNA_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"CNC_mRNA.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1974 Columns: 16
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (5): ProbeName, Regulation, GeneSymbol, chrom, strand
-dbl (11): FoldChange, RNAlength, txStart, txEnd, 2,treatednormalized, 3,trea...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>expr_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2,treatednormalized"</span>, <span class="st">"3,treatednormalized"</span>, <span class="st">"4,treatednormalized"</span>, </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">"5,treatednormalized"</span>, <span class="st">"6,treatednormalized"</span>, <span class="st">"1,controlnormalized"</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>lncRNA_expr <span class="ot">&lt;-</span> lncRNA_data[, expr_cols]</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>mRNA_expr <span class="ot">&lt;-</span> mRNA_data[, expr_cols]</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lncRNA_expr) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(lncRNA_data<span class="sc">$</span>GeneSymbol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Setting row names on a tibble is deprecated.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mRNA_expr) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(mRNA_data<span class="sc">$</span>GeneSymbol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Setting row names on a tibble is deprecated.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>combined_expr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mRNA_expr, lncRNA_expr)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>combined_expr_t <span class="ot">&lt;-</span> <span class="fu">t</span>(combined_expr)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(combined_expr_t) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Kuramochi"</span>, <span class="st">"SNU-119"</span>, <span class="st">"OVCAR3"</span>, <span class="st">"SKOV3"</span>, <span class="st">"OVCAR4"</span>, <span class="st">"Control"</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(combined_expr_t, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>pca_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pca_res<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>pca_df<span class="sc">$</span>Sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(pca_df)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>pca_df<span class="sc">$</span>Group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Control"</span>)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_df, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Group, <span class="at">label =</span> Sample)) <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Cancer"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Control"</span> <span class="ot">=</span> <span class="st">"blue"</span>)) <span class="sc">+</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA Plot"</span>,</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Principal Component 1"</span>,</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Principal Component 2"</span>) <span class="sc">+</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lncRNA_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"CNC_lncRNA.csv"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>mRNA_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"CNC_mRNA.csv"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>expr_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2,treatednormalized"</span>, <span class="st">"3,treatednormalized"</span>, <span class="st">"4,treatednormalized"</span>, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>               <span class="st">"5,treatednormalized"</span>, <span class="st">"6,treatednormalized"</span>, <span class="st">"1,controlnormalized"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>lncRNA_expr <span class="ot">&lt;-</span> lncRNA_data[, expr_cols]</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>mRNA_expr <span class="ot">&lt;-</span> mRNA_data[, expr_cols]</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lncRNA_expr) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(lncRNA_data<span class="sc">$</span>GeneSymbol)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mRNA_expr) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(mRNA_data<span class="sc">$</span>GeneSymbol)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>combined_expr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mRNA_expr, lncRNA_expr)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>combined_expr_t <span class="ot">&lt;-</span> <span class="fu">t</span>(combined_expr)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(combined_expr_t) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Kuramochi"</span>, <span class="st">"SNU-119"</span>, <span class="st">"OVCAR3"</span>, <span class="st">"SKOV3"</span>, <span class="st">"OVCAR4"</span>, <span class="st">"Control"</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(combined_expr_t, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>pca_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pca_res<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>pca_df<span class="sc">$</span>Sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(pca_df)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>pca_df<span class="sc">$</span>Group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Cancer"</span>, <span class="st">"Control"</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_df, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Group, <span class="at">label =</span> Sample)) <span class="sc">+</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Cancer"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Control"</span> <span class="ot">=</span> <span class="st">"blue"</span>)) <span class="sc">+</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA Plot"</span>,</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Principal Component 1"</span>,</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Principal Component 2"</span>) <span class="sc">+</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
