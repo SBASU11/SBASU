@@ -166,6 +166,9 @@ ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = 
 ### Is there any transcriptomic variation among the ovarian cancer samples and control sample?
 
 ```{r}
+#| echo: true
+#| message: false
+#| warning: false
 
 lncRNA_data <- read_csv("CNC_lncRNA.csv")
 mRNA_data <- read_csv("CNC_mRNA.csv")
