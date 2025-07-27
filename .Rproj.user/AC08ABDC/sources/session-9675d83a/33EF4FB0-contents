@@ -209,8 +209,7 @@ Lack of biological replicates for normal samples
 
 ### Conclusion
 
-By combining volcano plots, bar graphs, PCA, and CNC analysis, we can
-dissect the complex transcriptomic landscape of ovarian cancer cells.
-This structured pipeline not only identifies key regulators but also
-provides biological insights for downstream validation and hypothesis
-generation.
+By combining volcano plots, bar graphs, and PCA plot, we can dissect the
+complex transcriptomic landscape of ovarian cancer cells. This
+structured pipeline not only identifies key regulators but also provides
+biological insights for downstream validation and hypothesis generation.
