@@ -161,6 +161,53 @@ ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = 
 
 ### Is there any transcriptomic variation among the ovarian cancer samples and control sample?
 
+```{r}
+# Step 1: Read data
+lncRNA_data <- read_csv("CNC_lncRNA.csv")
+mRNA_data <- read_csv("CNC_mRNA.csv")
+
+# Step 2: Extract expression columns
+expr_cols <- c("2,treatednormalized", "3,treatednormalized", "4,treatednormalized", 
+               "5,treatednormalized", "6,treatednormalized", "1,controlnormalized")
+
+lncRNA_expr <- lncRNA_data[, expr_cols]
+mRNA_expr <- mRNA_data[, expr_cols]
+
+# Step 3: Set gene names as row names
+rownames(lncRNA_expr) <- make.unique(lncRNA_data$GeneSymbol)
+rownames(mRNA_expr) <- make.unique(mRNA_data$GeneSymbol)
+
+# Step 4: Combine and transpose data
+combined_expr <- rbind(mRNA_expr, lncRNA_expr)
+combined_expr_t <- t(combined_expr)
+
+# Step 5: Rename rownames for samples
+rownames(combined_expr_t) <- c("Kuramochi", "SNU-119", "OVCAR3", "SKOV3", "OVCAR4", "Control")
+
+# Step 6: Run PCA
+pca_res <- prcomp(combined_expr_t, scale. = TRUE)
+
+# Step 7: Prepare PCA data frame
+pca_df <- data.frame(pca_res$x[, 1:2])
+pca_df$Sample <- rownames(pca_df)
+pca_df$Group <- c("Cancer", "Cancer", "Cancer", "Cancer", "Cancer", "Control")
+
+# Step 8: Plot
+ggplot(pca_df, aes(x = PC1, y = PC2, color = Group, label = Sample)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 1.5, size = 3) +
+  scale_color_manual(values = c("Cancer" = "red", "Control" = "blue")) +
+  labs(title = "PCA: Combined mRNA and lncRNA Expression",
+       x = "Principal Component 1",
+       y = "Principal Component 2") +
+  theme_minimal()
+
+```
+
+### Limitations
+
+Lack of biological replicates for normal samples
+
 ### Conclusion
 
 By combining volcano plots, bar graphs, PCA, and CNC analysis, we can
