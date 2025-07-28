@@ -192,7 +192,7 @@ pca_df$Group <- c("Cancer", "Cancer", "Cancer", "Cancer", "Cancer", "Control")
 #Plot
 ggplot(pca_df, aes(x = PC1, y = PC2, color = Group, label = Sample)) +
   geom_point(size = 3) +
-  geom_text(vjust = 1.5, size = 3) +
+  geom_text(aes(label = Sample), vjust = 1.5, size = 3, color = "black") +
   scale_color_manual(values = c("Cancer" = "red", "Control" = "blue")) +
   labs(title = "PCA Plot",
        x = "Principal Component 1",
