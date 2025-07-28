@@ -12,5 +12,4 @@
 "0","    title = ""Differential mRNA Expression"","
 "0","    x = ""log2(Fold Change)"","
 "0","    y = ""-log10(p-value)"""
-"0","  ) +"
-"0","  theme(legend.title = element_blank())"
+"0","  )"

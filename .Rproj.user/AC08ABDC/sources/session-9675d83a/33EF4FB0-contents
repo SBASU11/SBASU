@@ -71,8 +71,7 @@ ggplot(mRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
     title = "Differential mRNA Expression",
     x = "log2(Fold Change)",
     y = "-log10(p-value)"
-  ) +
-  theme(legend.title = element_blank())
+  )
 ```
 
 Preparing the data for volcano plot (lncRNA Data)
@@ -115,8 +114,7 @@ ggplot(lncRNA_data, aes(x = log2FC, y = negLog10P, color = status)) +
     title = "Differential lncRNA Expression",
     x = "log2(Fold Change)",
     y = "-log10(p-value)"
-  ) +
-  theme(legend.title = element_blank())
+  )
 ```
 
 ### What are the top twenty most upregulated and downregulated genes?
@@ -132,7 +130,7 @@ top_up_mRNA <- mRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)
 Plot upregulated mRNA
 
 ```{r}
-ggplot(top_up_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_up_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + labs( title = "Top 20 Upregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 downregulated mRNA
@@ -146,21 +144,21 @@ top_down_mRNA <- mRNA_data |> arrange(log2FC) |> slice_head(n = 20)
 Plot downregulated mRNA
 
 ```{r}
-ggplot(top_down_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_down_mRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() +  labs(title = "Top 20 Downregulated mRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 upregulated lncRNA
 
 ```{r}
 top_up_lncRNA <- lncRNA_data |> arrange(desc(log2FC)) |> slice_head(n = 20)
-ggplot(top_up_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs( title = "Top 20 Upregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_up_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "pink", high = "darkred", name = "-log10(p-value)") + coord_flip() + labs( title = "Top 20 Upregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 Top 20 downregulated lncRNA
 
 ```{r}
 top_down_lncRNA <- lncRNA_data |> arrange(log2FC) |> slice_head(n = 20)
-ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip() + theme_minimal() + labs(title = "Top 20 Downregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
+ggplot(top_down_lncRNA, aes(x = reorder(GeneSymbol, log2FC), y = log2FC, fill = negLog10P)) + geom_col() + scale_fill_gradient(low = "lightgreen", high = "darkgreen", name = "-log10(p-value)") + coord_flip()  + labs(title = "Top 20 Downregulated lncRNA", x = "Gene Symbol", y = "log2(Fold Change)")
 ```
 
 ### Is there any transcriptomic variation among the ovarian cancer samples and control sample?
